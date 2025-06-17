@@ -1,40 +1,49 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
-  <title>Calculator-madi</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Contact Book</title>
 </head>
 <body>
-  <div class="wrapper">
-    <form name="cal">
-      <input type="text" name="display" id="display" placeholder="0" readonly>
-      <br>
-      <div class="buttons-box">
-        <input type="button" class="btn"  value="7" onclick="cal.display.value +='7'">
-        <input type="button" class="btn" value="8" onclick="cal.display.value +='8'">
-        <input type="button" class="btn" value="9" onclick="cal.display.value +='9'">
-        <input type="button" class="btn mbtn" value="+" onclick="cal.display.value +='+'">
-        <br>
-        <input type="button" class="btn" value="4" onclick="cal.display.value +='4'">
-        <input type="button" class="btn" value="5" onclick="cal.display.value +='5'">
-        <input type="button" class="btn" value="6" onclick="cal.display.value +='6'">
-        <input type="button" class="btn mbtn" value="-" onclick="cal.display.value +='-'">
-        <br>
-        <input type="button" class="btn" value="1" onclick="cal.display.value +='1'">
-        <input type="button" class="btn" value="2" onclick="cal.display.value +='2'">
-        <input type="button" class="btn" value="3" onclick="cal.display.value +='3'">
-        <input type="button" class="btn mbtn" value="*" onclick="cal.display.value +='*'">
-        <br>
-        <input type="button" class="btn cbtn" value="C" onclick="cal.display.value =''">
-        <input type="button" class="btn" value="0" onclick="cal.display.value +='0'">
-        <input type="button" class="btn mbtn" value="/" onclick="cal.display.value +='/'">
-        <input type="button" class="btn mbtn" value="=" onclick="cal.display.value = eval(cal.display.value)">
-        <br>
-        
-      </div>
-    </form>
-  </div>
+  <div id="table">Contacts loading...</div>
+  <button id="refresh" type="button">Refresh</button>
+  <button id="addContact" type="button" onclick="window.location.href='contact-form.html'">Add Contact</button>
+
+  <script src="config.js"></script>
+  <script>
+    document.getElementById("refresh").addEventListener('click', fetchContacts);
+    fetchContacts();
+
+    function fetchContacts() {
+      fetch(rootPath + "controller/get.contacts/", {
+        headers: {
+          "Authorization": "Bearer " + apiKey
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error("Error fetching contacts.");
+        return response.json();
+      })
+      .then(data => displayOutput(data))
+      .catch(error => {
+        console.error(error);
+        document.getElementById("table").innerHTML = "Could not load contacts.";
+      });
+    }
+
+    function displayOutput(data) {
+      let output = "<table>";
+      for (const contact of data) {
+        output += `
+          <tr>
+            <td><img src="${rootPath}controller/uploads/${contact.avatar}" width="40"/></td>
+            <td>${contact.firstname}</td>
+            <td>${contact.lastname}</td>
+          </tr>`;
+      }
+      output += "</table>";
+      document.getElementById("table").innerHTML = output;
+    }
+  </script>
 </body>
 </html>
