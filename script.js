@@ -1,148 +1,74 @@
-const cityInput = document.querySelector(".city-input");
-const searchBtn = document.querySelector(".Search-btn");
+const loginBtn = document.querySelector("#login");
+const registerBtn = document.querySelector("#register");
+const loginForm = document.querySelector(".login-form");
+const registerForm = document.querySelector(".register-form");
 
-const weatherInfoSection = document.querySelector('.weather-info');
-const notFoundSection = document.querySelector('.not-found');
-const searchCitySection = document.querySelector('.search-city');
 
-const countryTxt = document.querySelector('.country-txt');
-const tempTxt = document.querySelector('.temp-txt');
-const conditionTxt = document.querySelector('.condition-txt');
-const humidityValueTxt = document.querySelector('.humidity-value-txt');
-const windValueTxt = document.querySelector('.wind-value-txt');
-const weatherSummaryImg = document.querySelector('.weather-summary-img');
-const currentDateTxt = document.querySelector('.current-date-txt');
+loginBtn.addEventListener('click',  () => {
+  loginBtn.style.backgroundColor = "saddlebrown";
+  registerBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+   
+  loginForm.style.left = "50%";
+  registerForm.style.left = "-50%";
+  
+  loginForm.style.opacity = 1;
+  registerForm.style.opacity = 0;
+})
 
-const forecastItemsContainer = document.querySelector('.forecast-items-container');
+registerBtn.addEventListener('click',  () => {
+  loginBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
 
-const apiKey = 'e0f682c295e50be8f2a271e712ea8022';
+  registerBtn.style.backgroundColor = "saddlebrown";
+   
+  loginForm.style.left = "150%";
+  registerForm.style.left = "50%";
+  
+  loginForm.style.opacity = 0;
+  registerForm.style.opacity = 1;
+})
 
-searchBtn.addEventListener('click', () => {
-  if (cityInput.value.trim() !== '') {
-    updateWeatherInfo(cityInput.value);
-    cityInput.value = '';
-    cityInput.blur();
+const logInputField = document.getElementById('logPassword');
+const logInputIcon = document.getElementById('log-pass-icon');
+
+const regInputField = document.getElementById('regPassword');
+const regInputIcon = document.getElementById('reg-pass-icon');
+
+function myLogPassword(){
+  if (logInputField.type === "password"){
+    logInputField.type = "text";
+    
+    logInputIcon.name = "eye-off-outline";
+    logInputIcon.style.cursor = "pointer";
+  } else{
+    logInputField.type = "password";
+    
+    logInputIcon.name = "eye-outline";
+    logInputIcon.style.cursor = "pointer";
   }
-});
+}
 
-cityInput.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' && cityInput.value.trim() !== '') {
-    updateWeatherInfo(cityInput.value);
-    cityInput.value = '';
-    cityInput.blur();
-  }
-});
-
-async function getFetchData(endPoint, city) {
-  try {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${city}&appid=${apiKey}&units=metric`;
-    const response = await fetch(apiUrl);
-    return await response.json();
-  } catch (error) {
-    console.error("Fetch failed:", error);
-    return { cod: 500, message: "Network error" };
+function myRegPassword(){
+  if (regInputField.type === "password"){
+    regInputField.type = "text";
+    
+    regInputIcon.name = "eye-off-outline";
+    regInputIcon.style.cursor = "pointer";
+  } else{
+    regInputField.type = "password";
+    
+    regInputIcon.name = "eye-outline";
+    regInputIcon.style.cursor = "pointer";
   }
 }
 
-function getWeatherConditionIcon(id) {
-  if (id <= 232) return 'thunderstorm.png';
-  if (id <= 321) return 'drizzle.png';
-  if (id <= 531) return 'rain.png';
-  if (id <= 622) return 'snow.png';
-  if (id <= 781) return 'tornado.png';
-  if (id === 800) return 'sun.png';
-  return 'partly_cloudy.png';
-}
+function changeIcon(value) {
+  if(value.length > 0){
+    logInputIcon.name = "eye-outline";
+    regInputIcon.name = "eye-outline";
+  } else {
+    logInputIcon.name ="lock-closed-outline";
+    regInputIcon.name ="lock-closed-outline";
 
-
-function getWeatherApiIcon(iconId) {
-  return `https://openweathermap.org/img/wn/${iconId}@2x.png`;
-}
-
-function getCurrentDate() {
-  const currentDate = new Date();
-  const options = {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'short'
-  };
-  return currentDate.toLocaleDateString('en-GB', options);
-}
-
-async function updateWeatherInfo(city) {
-  const weatherData = await getFetchData('weather', city);
-
-  if (weatherData.cod != 200) {
-    showDisplaySection(notFoundSection);
-    return;
+    
   }
-
-  const {
-    name: country,
-    main: { temp, humidity },
-    weather: [{ icon, main: weatherType, id }],
-    wind: { speed },
-  } = weatherData;
-
-  countryTxt.textContent = country;
-  tempTxt.textContent = `${Math.round(temp)}°C`;
-  conditionTxt.textContent = weatherType;
-  humidityValueTxt.textContent = `${humidity}%`;
-  windValueTxt.textContent = `${speed} M/s`;
-  currentDateTxt.textContent = new Date().toLocaleDateString(undefined, {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-  weatherSummaryImg.src = getWeatherApiIcon(icon);
-
-  await updateForecastInfo(city);
-  showDisplaySection(weatherInfoSection);
-}
-
-async function updateForecastInfo(city) {
-  const forecastsData = await getFetchData('forecast', city);
-  const timeTaken = '12:00:00';
-  const todayDate = new Date().toISOString().split('T')[0];
-
-  forecastItemsContainer.innerHTML = '';
-  forecastsData.list.forEach(forecastWeather => {
-    if (forecastWeather.dt_txt.includes(timeTaken) && !forecastWeather.dt_txt.includes(todayDate)) {
-      updateForecastItems(forecastWeather);
-    }
-  });
-}
-
-function updateForecastItems(weatherData) {
-  const {
-    dt_txt: date,
-    weather: [{ id }],
-    main: { temp }
-  } = weatherData;
-
-  const dateTaken = new Date(date);
-  const dateOption = {
-    day: '2-digit',
-    month: 'short'
-  };
-  const dateResult = dateTaken.toLocaleDateString('en-US', dateOption);
-
-  const forecastItem = `
-    <div class="forecast-item">
-      <h5 class="forecast-item-date regular-txt">${dateResult}</h5>
-      <img src="assets/weather/${getWeatherConditionIcon(id)}" class="forecast-item-img">
-      <h5 class="forecast-item-temp">${Math.round(temp)} °C</h5>
-    </div>
-  `;
-
-  forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem);
-}
-
-function showDisplaySection(section) {
-  [weatherInfoSection, searchCitySection, notFoundSection].forEach(sec => {
-    sec.style.display = 'none';
-  });
-
-  section.style.display = 'flex';
 }
