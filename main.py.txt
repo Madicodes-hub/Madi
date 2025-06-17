@@ -1,0 +1,134 @@
+#Advanced concepts - Strings
+
+message = 'Hello, World!'
+
+print(message.strip()) # Remove leading and trailing whitespace 
+print(message.lower()) # Convert all characters to lowercase 
+print(message.split(',')) # Split the string into a list based on the comma
+#upper method
+print(message.upper()) # Convert all characters to uppercase 
+
+#replace method 
+print(message.replace()) # Convert all characters to replace
+
+#numeric Data
+num = 3
+print(type(num))
+
+num2 = 3.14
+
+print(type(num2))
+
+#variables
+
+my_variable = 10
+total_count = 0
+user = 'Madi'
+
+#Invalid
+second_variable = 10
+user_name = 20
+
+#Operators
+
+# Addition (+)
+# Subtraction (-)
+# Multiplication (*)
+# Division (/)
+# Modulus (%)
+# Exponent (**)
+
+x = 10
+y = 2
+print(x+y)
+print(x-y)
+print(x*y)
+print(x/y)
+print(x&y)
+print(5&2)
+print(x**y)
+
+ x += 2
+ print(x)
+ 
+ #Operators with Strings
+ 
+ str1 = 'Hello'
+ str2 = 'World'
+ 
+ print(str1 + " " + str2)
+ 
+ print(str1 * 4)
+ 
+ #Control Statements
+ 
+ num = 0
+ if num > 0:
+   print("This number is positive")
+ elif num == 0:
+    print("This number is zero")
+ else:
+   print("This number is negative")
+   
+ num1 = int(input("Enter the first number: "))
+ 
+  num2 = int(input("Enter the second number: "))
+  
+  if num1 > num2:
+    print(num1, "is greater than" , num2)
+  elif num2 > num1:
+    print(num2, "is greater than", num1)
+  else:
+    print("Both numbers are equal")
+  
+#Loops
+
+fruits = ["apple", "banana", "orange"]
+
+for fruit in fruits:
+  print(fruit)
+
+numbers = [2, 4, 6, 8, 10]
+
+for number in numbers:
+  print(number)
+  
+#Using a while loop to count from 1 to 5 
+count = 1
+
+while count <= 5:
+  print(count)
+  count += 1 # Increments the count by 1
+  
+  #Loop Control Statements
+  
+  fruits = ["apple," "banana", "kiwi", "orange"]
+  
+  for fruit in fruits:
+    if fruit == "kiwi":
+      break # Exits the loop if kiwi is found 
+    print(fruit)
+    
+  print()
+  
+  for fruit in fruits:
+    if fruit == "kiwi":
+      continue # Skips kiwi and moves to the iteration 
+    print(fruit)
+  
+  print()
+  
+  for fruit in fruits:
+    if fruit == "kiwi":
+      pass  # Placeholder, no action is needed for kiwi
+    print(fruit)
+    
+    
+    count = 0
+    
+    while count < 5:
+      print(count)
+      count += 1
+      if count == 3:
+        break # Exits the loop when the count is reached - 3
+      
