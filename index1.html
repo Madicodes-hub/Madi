@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Never doing this again😭</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #1a1a1a;
+      font-family: "Segoe UI", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .calculator {
+{      background: radial-gradient(circle at top left, #2c2c2c, #1a1a1a);
+}      padding: 20px;
+      border-radius: 20px;
+      box-shadow: inset 0 0 10px #000, 0 10px 30px rgba(0, 0, 0, 0.7);
+      width: 360px;
+      border: 2px solid #444;
+    }
+    .brand {
+      text-align: center;
+      color: #00ffff;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px #0ff;
+    }
+    .mode {
+      text-align: right;
+      color: #0ff;
+      font-size: 0.85em;
+      margin-bottom: 5px;
+    }
+    .screen {
+      background: #b8ffc0;
+      color: #000;
+      font-family: 'Courier New', monospace;
+      font-size: 1.9em;
+      text-align: right;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: inset 0 0 8px #5f5;
+      border: 1px solid #0f0;
+      height: 50px;
+      overflow-x: auto;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .btn {
+      position: relative;
+      background: linear-gradient(to bottom, #444, #222);
+      color: #fff;
+      border: 1px solid #111;
+      border-radius: 10px;
+      padding: 10px 5px;
+      font-size: 0.9em;
+      height: 55px;
+      cursor: pointer;
+      box-shadow: 0 4px #000;
+      transition: transform 0.05s ease;
+    }
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px #000;
+    }
+    .btn .shift-fn {
+      color: #ffa500;
+      font-size: 0.7em;
+      position: absolute;
+      top: 4px;
+      left: 6px;
+    }
+    .btn .main-fn {
+      font-size: 1em;
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+    }
+
+    .operator {
+      background: linear-gradient(to bottom, #005577, #003344);
+    }
+    .function {
+      background: linear-gradient(to bottom, #666, #444);
+    }
+    .equal {
+      background: linear-gradient(to bottom, #339933, #226622);
+    }
+    .equal:hover {
+      background: linear-gradient(to bottom, #44aa44, #337733);
+    }
+    .shift-active .main-fn {
+      opacity: 0.3;
+    }
+    .shift-active .shift-fn {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="brand">CTIFREE fx-991MS</div>
+    <div class="mode" id="angleMode">DEG</div>
+    <div class="screen" id="screen">0</div>
+    <div class="buttons">
+      <button class="btn function" onclick="toggleShift()"><span class="shift-fn">OFF</span><span class="main-fn">SHIFT</span></button>
+      <button class="btn function" onclick="toggleMode()"><span class="shift-fn">DRG</span><span class="main-fn">MODE</span></button>
+      <button class="btn function" onclick="clearEntry()"><span class="shift-fn">CLR</span><span class="main-fn">DEL</span></button>
+      <button class="btn function" onclick="clearAll()"><span class="shift-fn">RESET</span><span class="main-fn">AC</span></button>
+      <button class="btn function" onclick="insert('π')"><span class="shift-fn">π</span><span class="main-fn">π</span></button>
+
+      <button class="btn" onclick="handleFn('asin', 'sin')"><span class="shift-fn">sin⁻¹</span><span class="main-fn">sin</span></button>
+      <button class="btn" onclick="handleFn('acos', 'cos')"><span class="shift-fn">cos⁻¹</span><span class="main-fn">cos</span></button>
+      <button class="btn" onclick="handleFn('atan', 'tan')"><span class="shift-fn">tan⁻¹</span><span class="main-fn">tan</span></button>
+      <button class="btn" onclick="insert('(')"><span class="shift-fn">(</span><span class="main-fn">(</span></button>
+      <button class="btn" onclick="insert(')')"><span class="shift-fn">)</span><span class="main-fn">)</span></button>
+
+      <button class="btn" onclick="handleFn('cbrt', 'sqrt')"><span class="shift-fn">∛</span><span class="main-fn">√</span></button>
+      <button class="btn" onclick="insert('**3')"><span class="shift-fn">x³</span><span class="main-fn">x²</span></button>
+      <button class="btn" onclick="handleFn('log10', 'log')"><span class="shift-fn">10^x</span><span class="main-fn">log</span></button>
+      <button class="btn" onclick="handleFn('exp', 'ln')"><span class="shift-fn">e^x</span><span class="main-fn">ln</span></button>
+      <button class="btn" onclick="insert('1/(')"><span class="shift-fn">%</span><span class="main-fn">1/x</span></button>
+
+      <button class="btn" onclick="insert('7')"><span class="main-fn">7</span></button>
+      <button class="btn" onclick="insert('8')"><span class="main-fn">8</span></button>
+      <button class="btn" onclick="insert('9')"><span class="main-fn">9</span></button>
+      <button class="btn operator" onclick="insert('/')"><span class="main-fn">÷</span></button>
+      <button class="btn operator" onclick="insert('*')"><span class="main-fn">×</span></button>
+
+      <button class="btn" onclick="insert('4')"><span class="main-fn">4</span></button>
+      <button class="btn" onclick="insert('5')"><span class="main-fn">5</span></button>
+      <button class="btn" onclick="insert('6')"><span class="main-fn">6</span></button>
+      <button class="btn operator" onclick="insert('-')"><span class="main-fn">−</span></button>
+      <button class="btn operator" onclick="insert('+')"><span class="main-fn">+</span></button>
+
+      <button class="btn" onclick="insert('1')"><span class="main-fn">1</span></button>
+      <button class="btn" onclick="insert('2')"><span class="main-fn">2</span></button>
+      <button class="btn" onclick="insert('3')"><span class="main-fn">3</span></button>
+      <button class="btn" onclick="insert('0')"><span class="main-fn">0</span></button>
+      <button class="btn" onclick="insert('.')"><span class="main-fn">.</span></button>
+
+      <button class="btn" onclick="insert('e')"><span class="main-fn">e</span></button>
+      <button class="btn" onclick="insert('**')"><span class="main-fn">^</span></button>
+      <button class="btn" onclick="insert(',')"><span class="main-fn">,</span></button>
+      <button class="btn equal" onclick="calculate()"><span class="main-fn">=</span></button>
+    </div>
+  </div>
+
+  <script>
+    const screen = document.getElementById("screen");
+    const angleMode = document.getElementById("angleMode");
+    let input = "";
+    let shift = false;
+    let mode = "DEG";
+
+    function toggleShift() {
+      shift = !shift;
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.classList.toggle('shift-active', shift);
+      });
+    }
+
+    function toggleMode() {
+      mode = mode === "DEG" ? "RAD" : "DEG";
+      angleMode.textContent = mode;
+    }
+
+    function clearAll() {
+      input = "";
+      screen.textContent = "0";
+    }
+
+    function clearEntry() {
+      input = input.slice(0, -1);
+      screen.textContent = input || "0";
+    }
+
+    function insert(value) {
+      input += value;
+      screen.textContent = input || "0";
+  
+        }
+
+    function handleFn(shiftFn, normalFn) {
+      const fn = shift ? shiftFn : normalFn;
+      shift = false;
+      document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('shift-active'));
+
+      if (["sin", "cos", "tan", "asin", "acos", "atan"].includes(fn)) {
+        input += fn + "(";
+      } else if (fn === "sqrt") {
+        input += "Math.sqrt(";
+      } else if (fn === "cbrt") {
+        input += "Math.cbrt(";
+      } else if (fn === "log") {
+        input += "Math.log10(";
+      } else if (fn === "log10") {
+        input += "10**(";
+      } else if (fn === "ln") {
+        input += "Math.log(";
+      } else if (fn === "exp") {
+        input += "Math.exp(";
+      } else {
+        input += fn + "(";
+      }
+
+      screen.textContent = input;
+    }
+
+    function calculate() {
+      try {
+        const angleConvert = x => mode === "DEG" ? x * Math.PI / 180 : x;
+        const toDeg = x => mode === "DEG" ? x * 180 / Math.PI : x;
+
+        const sin = x => Math.sin(angleConvert(eval(x)));
+        const cos = x => Math.cos(angleConvert(eval(x)));
+        const tan = x => Math.tan(angleConvert(eval(x)));
+        const asin = x => toDeg(Math.asin(eval(x)));
+        const acos = x => toDeg(Math.acos(eval(x)));
+        const atan = x => toDeg(Math.atan(eval(x)));
+
+        const result = eval(
+          input
+            .replace(/π/g, "Math.PI")
+            .replace(/e/g, "Math.E")
+            .replace(/sin\(/g, "sin(")
+            .replace(/cos\(/g, "cos(")
+            .replace(/tan\(/g, "tan(")
+            .replace(/asin\(/g, "asin(")
+            .replace(/acos\(/g, "acos(")
+            .replace(/atan\(/g, "atan(")
+        );
+
+        screen.textContent = result;
+        input = result.toString();
+      } catch (err) {
+        screen.textContent = "Error";
+        input = "";
+      }''
+    }
+  </script>
+</body>
+</html>
