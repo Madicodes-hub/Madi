@@ -1,62 +1,40 @@
-*{
-  margin: 0;
-  padding: 0;
-  font-family: Helvetica, sans-serif;
-}
 body{
-  background: #5372f0;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background: url("./cover-start.jpg");
+  background-size: 100%;
 }
 
-.wrapper{
-  width: 350px;
-  height: 480px;
-  margin: 65px auto;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+#board{
+  width: 540px;
+  height: 540px;
+  /*background-color: green;*/
+  
+  
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  
+  background: url("./soil.png");
+  background-size: cover;
+  border: 3px solid white;
+  border-radius: 25px;
 }
 
-#display{
-  border: none;
-  outline: none;
-  width: 330px;
-  height: 80px;
-  color: black;
-  font-size: 58px;
-  font-weight: 700;
-  padding: 10px;
-  text-align: right;
-  background: grey;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+#board div{
+  width: 180px;
+  height: 180px;
+  background-image: url("./pipe.png");
+  background-size: cover;
 }
 
-.buttons-box{
-  margin: 35px 15px;
-}
-.btn{
-  width: 60px;
-  height: 60px;
-  margin: 8px;
-  border: none;
-  outline: none;
-  color: #5e5858;
-  cursor: pointer;
-  font-size: 28px;
-  line-height: 30px;
-  border-radius: 50%;
-  background: #ecedef;
-}
-
-.btn:hover{
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.cbtn, .cbtn:hover{
-  background: darkgrey;
-  color: white;
-}
-.mbtn, .mbtn:hover{
-  background: grey;
-  color: white;
+#board div img{
+  width: 100px;
+  height: 100px;
+  
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }

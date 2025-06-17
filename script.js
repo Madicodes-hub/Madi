@@ -1,74 +1,86 @@
-const loginBtn = document.querySelector("#login");
-const registerBtn = document.querySelector("#register");
-const loginForm = document.querySelector(".login-form");
-const registerForm = document.querySelector(".register-form");
+let currMoleTile;
+let currPlantTile;
+let score = 0;
+let gameOver = 0;
 
-
-loginBtn.addEventListener('click',  () => {
-  loginBtn.style.backgroundColor = "saddlebrown";
-  registerBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-   
-  loginForm.style.left = "50%";
-  registerForm.style.left = "-50%";
-  
-  loginForm.style.opacity = 1;
-  registerForm.style.opacity = 0;
-})
-
-registerBtn.addEventListener('click',  () => {
-  loginBtn.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-
-  registerBtn.style.backgroundColor = "saddlebrown";
-   
-  loginForm.style.left = "150%";
-  registerForm.style.left = "50%";
-  
-  loginForm.style.opacity = 0;
-  registerForm.style.opacity = 1;
-})
-
-const logInputField = document.getElementById('logPassword');
-const logInputIcon = document.getElementById('log-pass-icon');
-
-const regInputField = document.getElementById('regPassword');
-const regInputIcon = document.getElementById('reg-pass-icon');
-
-function myLogPassword(){
-  if (logInputField.type === "password"){
-    logInputField.type = "text";
-    
-    logInputIcon.name = "eye-off-outline";
-    logInputIcon.style.cursor = "pointer";
-  } else{
-    logInputField.type = "password";
-    
-    logInputIcon.name = "eye-outline";
-    logInputIcon.style.cursor = "pointer";
-  }
+window.onload = function fname() {
+  setGame();
 }
 
-function myRegPassword(){
-  if (regInputField.type === "password"){
-    regInputField.type = "text";
-    
-    regInputIcon.name = "eye-off-outline";
-    regInputIcon.style.cursor = "pointer";
-  } else{
-    regInputField.type = "password";
-    
-    regInputIcon.name = "eye-outline";
-    regInputIcon.style.cursor = "pointer";
+function setGame() {
+  // set up the grid for the game board in html
+  for (let i = 0; i < 9; i++){ //i goes from 0 to 8, stops at 9
+    //<div id="0-8"></div>
+    let tile = document.createElement("div");
+    tile.id = i.toString();
+    tile.addEventListener("click", selectTile);
+    document.getElementById("board").appendChild(tile)
   }
+  setInterval(setMole, 1000);
+  setInterval(setPlant, 2000);
 }
 
-function changeIcon(value) {
-  if(value.length > 0){
-    logInputIcon.name = "eye-outline";
-    regInputIcon.name = "eye-outline";
-  } else {
-    logInputIcon.name ="lock-closed-outline";
-    regInputIcon.name ="lock-closed-outline";
+function getRandomTile() {
+  let num = Math.floor(Math.random() *9);
+  return num.toString();
+}
 
+function setMole() {
+  if (gameOver) {
+    return;
+  }
+  
+  if (currMoleTile) {
+    currMoleTile.innerHTML ="";
+  }
+    
+  // Tab to edit
+  let mole = document.createElement("img");
+  mole.src = "./monty-mole.png";
+  
+  let num = getRandomTile();
+  if (currPlantTile && currPlantTile.id ==num) {
+    return;
+    
+  }
+  currMoleTile = document.getElementById(num);
+  currMoleTile.appendChild(mole);
+}
+
+function setPlant() {
+  if (gameOver) {
+    return;
+    
+  }
+  // Tab to edit
+  if (currPlantTile) {
+    currPlantTile.innerHTML ="";
+  }
+  
+  let plant = document.createElement("img");
+  plant.src ="./piranha-plant.png";
+  
+  let num = getRandomTile();
+  if (currMoleTile && currMoleTile.id == num) {
+    return;
+    
+  }
+  currPlantTile= document.getElementById(num);
+  currPlantTile.appendChild(plant);
+}
+
+function selectTile() {
+  if (gameOver) {
+    return;
+  }
+  // Tab to edit
+  if (this == currMoleTile) {
+    score += 10;
+    document.getElementById("score").innerText = score.toString();
+  }
+  else if (this == currPlantTile) {
+    document.getElementById("score").innerText ="GAME OVER" + score.toString();
+    gameOver = true;
     
   }
 }
