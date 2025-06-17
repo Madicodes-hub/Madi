@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Enter API Key</title>
+</head>
+<body>
+  <h2>Please enter a valid API key</h2>
+  <form>
+    <input type="text" id="apiKey" placeholder="Enter API key" required />
+    <button id="submitApiKey">Submit</button>
+  </form>
+
+  <script src="config.js"></script>
+  <script>
+    document.getElementById("submitApiKey").addEventListener('click', function(e) {
+      e.preventDefault();
+      let key = document.getElementById("apiKey").value.trim();
+
+      fetch(rootPath + "controller/api-key/?apiKey=" + key)
+        .then(response => response.text())
+        .then(data => {
+          if (data === "1") {
+            localStorage.setItem("apiKey", key);
+            window.location.href = "index.html";
+          } else {
+            alert("Invalid API key entered.");
+          }
+        });
+    });
+  </script>
+</body>
+</html>
